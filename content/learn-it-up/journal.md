@@ -43,3 +43,29 @@ To consider this, must search on existing applications of these to LSTMs in othe
 **QUESTION:**
 DanceDanceConv and DanceDanceConvLSTM both use an architecture 
 simular to the encoder-decoder. Could doing something like reversing the input possibly improve the model like it does with seq2seq? 
+
+- I've read [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473)
+to learn the original attention mechanism proposal for RNNs
+
+**QUESTION:**
+Could adding this attention encoder-decoder mechanism to DanceDanceConvolution help increase performance without adding the
+computational costs of ConvLSTM?
+
+### 19/05/2026:
+
+- I've read Attention is All you need once again to understand the main differences between its attention approach than Learning to
+Align and Translate.
+
+**QUESTION:**
+Honestly, the original approach is much simplier, but I see the appeal of the transformer.
+I wonder if you would get great performance in RNN attention based networks by adding residuals and/or normalization. Food for thought.
+
+- I've started re-studying the DanceDanceConvLSTM paper.
+Altough my original plans were to implement a DanceDanceConvolution like network for computational reasons,
+
+I've noticed a detail that I have glossed over in DanceDanceConvLSTM, that is the fact that it _does_ utilize
+music information when doing step placement, which feels right with me.
+I shall also inspect the [transformer](https://arxiv.org/abs/2311.13687) based generation
+to determine if they do that.
+
+
