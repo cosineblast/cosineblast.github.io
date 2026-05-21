@@ -68,4 +68,43 @@ music information when doing step placement, which feels right with me.
 I shall also inspect the [transformer](https://arxiv.org/abs/2311.13687) based generation
 to determine if they do that.
 
+### 20/05/2026:
+
+- I have started training a sample DanceDanceConvLSTM model for In The Groove 1 in [Rede Linux](https://linux.ime.usp.br/),
+but the goku and vegeta servers were temporarily disabled for a reform of the place.
+
+- I've restudied DanceDanceConvLSTM to better understand its architecture and
+point out the next subjects to study and important notes for the development plan for this project.
+
+- I've glossed over the transformer generation paper (which we will refer as the BAS2S paper) to check on its performance.
+
+#### NOTES
+
+As a somewhat experienced (average S16) player of Pump it Pump and having some experience writing my own charts for the game,
+I could instantly note a few issues with the architecture of the original paper DanceDanceConvolution paper, the main ones being:
+1. The step placement process doesn't place the steps aligned with the BPM of the game (in real charts, the steps are always placed within
+fractions of a full beat measure), instead placing the steps in arbitrary positions, possibly misaligned with the BPM of the song.
+2. The step selection process does not take music information into consideration, it only receives the step placements and tries to spit out the time outputs.
+3. The chart generation models are trained on all available chart styles (technical, run, goofy). T
+his is like trying train a model to generate text in different languages, or generate music in different musical styles.
+
+The first two¹ were fortunately addressed in DanceDanceConvLSTM from 2025, but the third point is still untackled.
+
+Additionally, the BPM detection often fails to detect the right offset for songs with variable or changing BPM.
+Considering that the algorithm used by DDCLSTM is the same used by the software Arrow Vortex which I use for writing charts, I know that this works pretty bad
+for BPM-chaning charts, requiring manual intervention and BPM change placement. This is even worse for charts with continuously changing BPMs.
+In the training for Pump it up charts, I should remove these BPM-changing songs.
+
+Another thing to point out is that pump it up charts have lots of gimmicks and details that should be filtered out when doing modelling.
+
+¹: When I initially read DanceDanceConvLSTM, I didn't take into consideration that the model solves both problems, I thought it only solved number 2.:
+
+Next steps:
+
+- Read the Yoshua Bengio paper about music representation and log-melbands (used in all the chart generation reference papers, DDC, DDCLSTM, BAS2S).
+- Read the ConvLSTM paper
+- Read DDCLSTM again to get a better understanding of the architecture.
+- Read the DDCLSTM code for the model to get right some questions left out (e.g how does it models BPM and difficulty?)
+- Read the BAS2S paper.
+- Define a cronogram for the project.
 
