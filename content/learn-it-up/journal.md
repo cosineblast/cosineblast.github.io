@@ -60,13 +60,14 @@ Align and Translate.
 Honestly, the original approach is much simplier, but I see the appeal of the transformer.
 I wonder if you would get great performance in RNN attention based networks by adding residuals and/or normalization. Food for thought.
 
-- I've started re-studying the DanceDanceConvLSTM paper.
+- I've started re-studying the DanceDanceConvLSTM (DDCL) paper.
 Altough my original plans were to implement a DanceDanceConvolution like network for computational reasons,
 
 I've noticed a detail that I have glossed over in DanceDanceConvLSTM, that is the fact that it _does_ utilize
 music information when doing step placement, which feels right with me.
-I shall also inspect the [transformer](https://arxiv.org/abs/2311.13687) based generation
-to determine if they do that.
+I shall also inspect the transformer-based generation paper
+[_Beat-Aligned Spectrogram-to-Sequence Generation of Rhythm-Game Charts_](https://arxiv.org/abs/2311.13687)
+(Yi2023) to determine if they do that.
 
 ### 20/05/2026:
 
@@ -76,7 +77,7 @@ but the goku and vegeta servers were temporarily disabled for a reform of the pl
 - I've restudied DanceDanceConvLSTM to better understand its architecture and
 point out the next subjects to study and important notes for the development plan for this project.
 
-- I've glossed over the transformer generation paper (which we will refer as the BAS2S paper) to check on its performance.
+- I've glossed over the Yi2023 paper to check on its performance.
 
 #### NOTES
 
@@ -86,7 +87,7 @@ I could instantly note a few issues with the architecture of the original paper 
 fractions of a full beat measure), instead placing the steps in arbitrary positions, possibly misaligned with the BPM of the song.
 2. The step selection process does not take music information into consideration, it only receives the step placements and tries to spit out the time outputs.
 3. The chart generation models are trained on all available chart styles (technical, run, goofy). T
-his is like trying train a model to generate text in different languages, or generate music in different musical styles.
+his is like trying train a single model to translate text from english, using datasets of various text in different languages.
 
 The first two¹ were fortunately addressed in DanceDanceConvLSTM from 2025, but the third point is still untackled.
 
@@ -97,14 +98,24 @@ In the training for Pump it up charts, I should remove these BPM-changing songs.
 
 Another thing to point out is that pump it up charts have lots of gimmicks and details that should be filtered out when doing modelling.
 
-¹: When I initially read DanceDanceConvLSTM, I didn't take into consideration that the model solves both problems, I thought it only solved number 2.:
+¹: When I initially read DanceDanceConvLSTM, I didn't take into consideration that the model solves both problems 1 and 2, I thought it only solved number 2.
 
 Next steps:
 
-- Read the Yoshua Bengio paper about music representation and log-melbands (used in all the chart generation reference papers, DDC, DDCLSTM, BAS2S).
+- Read the _Building Musically-Relevant Audio Features Through
+Multiple Timescale Representations_ (Bengio2012) paper about music representation and log-melbands (used in all the chart generation reference papers, DDC, DDCLSTM, BAS2S).
 - Read the ConvLSTM paper
 - Read DDCLSTM again to get a better understanding of the architecture.
 - Read the DDCLSTM code for the model to get right some questions left out (e.g how does it models BPM and difficulty?)
 - Read the BAS2S paper.
 - Define a cronogram for the project.
+
+### 21/05/2026
+
+Looking at the references for Bengio2012, I've read Chapters 2 and 4 of _Algorithms for Classifying Recorded Music by Genre_ (Bergstra2006b),
+which surveys several basic important concepts in audio processing in its chapter 2, specially
+the Mel, Sone and Phon scales, sound pressure and intensity.
+
+Additionally, it explains and tests various audio feature extraction methods, introducing Mel-scale Phon Coefficients (MPC) and Mel-scale Sone Coefficients,
+which make quite some sense.
 
