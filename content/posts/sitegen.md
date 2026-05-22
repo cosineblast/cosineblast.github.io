@@ -4,85 +4,28 @@
 _2026/05/18_
 
 Eu percebi que existem muitos projetos por aí para geração de sites estáticos.
-A ideia é bem simples, vc dá uns arquivos markdown, um programa gera uns arquivos html, vc bota num host tipo github pages, e segue com a sua vida.
-
-São úteis para documentação ou páginas pessoais, e acabei precisando de um para o meu [TCC](https://cosineblast.github.io/learn-it-up).
+A ideia é bem simples, você escreve uns arquivos markdown, um programa gera uns arquivos html, você sobe num host tipo github pages, e segue com a sua vida.
+São úteis para documentação ou páginas pessoais, e acabei precisando de um para o meu [TCC](https://cosineblast.github.io/learn-it-up), que se expandiu para
+a minha página pessoal de publicações.
 
 Já tentei usar Hugo ou Jekyll no passado, mas tive umas dores de cabeça com temas e versionamento.
 Uns tempos atrás, eu vi várias publicações no [lobste.rs](https://lobste.rs) sobre pessoas montando os seus própios geradores de sites,
-então resolvi entrar na onda e fazer o mesmo.
-
-É bem divertido, e dependendo do que você precisa, pode ser bem simples!
+então resolvi entrar na onda e fazer o mesmo. É bem divertido, e dependendo do que você precisa, pode ser bem simples!
 
 Eu resolvi fazer um scriptzinho de shell em ruby (que é uma ótima linguagem para [substituir bash](https://lucasoshiro.github.io/posts/2024-06-17-ruby-shellscript/) em scripts),
-que lê os arquivos markdown, transforma em um trecho de HTML usando `pandoc`, e substituti esse corpo um arquivo `template.html` com uma substituição de string
-direta.
+que lê os arquivos markdown, os transforma em trechos de HTML usando `pandoc`, e insere esse corpo um arquivo `template.html` com uma substituição de string.
 
 Eu não preciso de RSS ou tradução, então isso serve bem para mim por enquanto.
 
-A única parte chatinha do processo todo foi definir o caminho base para links entre as páginas, já que se vc estiver hosteando o do seu site em "https://seu-website/blog",
-(por exemplo, num repositório do github pages), então para colocar um anchor (`<a>`) para outra página "/abc.html", vc precisa trocar "/abc.html" por "/blog/abc.html".
+A única parte chatinha do processo foi definir o caminho base para links entre as páginas, já que se você estiver hosteando seu site em "https://seu-website/projeto",
+(por exemplo, num repositório do github pages), então para colocar um anchor (`<a>`) para outra página "/abc.html", vc precisa trocar "/abc.html" por "/projeto/abc.html".
+O pandoc não possui nenhuma flag para especificar isso, mas é possível fazer isso com um pequeno filtro do `pandoc` em lua. 
 
-Para isso, tive que usar um filtro do `pandoc` em lua. 
+Em geral, foi bem divertido, e planejo continuar usar esse método para expandir esse site.
+Para outras pessoas que querem fazer suas páginas pessoais e possuem experiência em programação, recomendo fazer o mesmo:
+Escolher a sua linguagem de programação de preferência, e montar um scriptzinho para converter o conteúdo de markdown para HTML, de acordo com suas necessidades.
 
-Foi bem divertido, planjo usar isso para outros sites pessoais, ou para expandir os que já tenho.
+- [Script original](https://gist.github.com/cosineblast/c87ca470f66f935a117e96d54218b8d2)
+- [Filtro do pandoc para substituir / pelo webroot](https://gist.github.com/cosineblast/7ced4408a45b95babfcad3a4d3e29267)
+- [Script atual](https://github.com/cosineblast/cosineblast.github.io/blob/main/gen.rb)
 
-Recomendo fazer o mesmo para outras pessoas, usando a sua linguagem de programação de preferência.
-
-## Scripts
-
-Script de geração em Ruby:
-
-```ruby
-#!/bin/ruby
-
-# settings
-
-if ENV['WEBROOT'] == nil then
-  ENV['WEBROOT'] = ''
-end
-
-WEBROOT = ENV['WEBROOT']
-
-# execution
-
-`mkdir -p build`
-`cp *.pdf *.jpg *.png *.css build`
-
-source_files = `ls *.md`.split("\n")
-
-template = `cat template.html`.gsub '$WEBROOT', WEBROOT
-
-for source_file in source_files do
-
-  basename = File.basename(source_file, File.extname(source_file))
-  body_file = "build/#{basename}.body.html"
-  target_file = "build/#{basename}.html"
-
-  `pandoc --lua-filter="filter.lua" #{source_file} -o "#{body_file}"`
-
-  result = template.gsub '$STUFF', `cat "#{body_file}"`
-
-  File.write(target_file, result)
-end
-```
-
-Filtro do pandoc em lua:
-
-```lua
--- https://github.com/jgm/pandoc/issues/4894
-
-function Image (img)
-  if img.src:sub(1,1) == '/' then
-    img.src = os.getenv 'WEBROOT' .. img.src
-  end
-  return img
-end
-
-function Link (link)
-  if link.target:sub(1,1) == '/' then
-    link.target = os.getenv 'WEBROOT' .. link.target
-  end
-  return link
-end
-```
