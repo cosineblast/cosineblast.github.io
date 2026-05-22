@@ -32,7 +32,7 @@ for source_file in source_files do
 
   puts "Processing #{source_file}"
 
-  `pandoc --lua-filter="filter.lua" #{source_file} -o "#{body_file}"`
+  `pandoc --lua-filter="filter.lua" #{source_file} -o "#{body_file}" --mathml`
 
   result = template.gsub '$STUFF', `cat "#{body_file}"`
 
