@@ -119,3 +119,41 @@ the Mel, Sone and Phon scales, sound pressure and intensity.
 Additionally, it explains and tests various audio feature extraction methods, introducing Mel-scale Phon Coefficients (MPC) and Mel-scale Sone Coefficients,
 which make quite some sense.
 
+
+## 22/05/2026
+
+I've read _Temporal Pooling And Multiscale Learning For Automatic Annotation And Ranking Of Music Audio_ (Hamel2011),
+since they are a reference for Bengio2012's usage of PCA in features but
+honestly I didn't really understand the whole PCA feature thing.
+
+## 23/05/2026
+
+I've read Bengio2012. I didn't really understand their PCA-based approach for musical feature in their models,
+but this technique is not used in later work such as DDC or DDCL. Instead, what is used is the approach to use
+multiple overlapping timescales to process information in the onset detection.
+
+I've read DDC once again. Their model is now very clear to me, both in terms of audio information retrieval, step placement and step selection.
+I have realized something interesting: You could technically make a program that receives some live audio input from a microphone and generate the
+step placements on the fly, depending on the LSTM unroll parameter for the encoder. For the parameters presented in DDC, this would be 2 seconds of delay.
+
+I've read _Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting_ (Shi2015) which introduces and explains ConvLSTM.
+
+I've read the step placement model of DDCL once again, and I now understand how it works.
+
+### NOTES
+
+- The ConvLSTM of Shi2015 uses peephole LSTM. (Could working memory connections improve things? Who knows)
+-  In DDC, the output of the LSTM is the concatenation of all the outputs over the LSTM unrolling. This isn't the case in DDCL, where the
+output of the LSTM layer is just the output of the last layer.
+- DDCL uses an integer to determine the difficulty for the model, instead of a one-hot encoding like DDC.
+
+## 24/05/2026
+
+I've read Yi2023 once again.
+
+### NOTES
+
+- The way they compare their models with DDC seems to be different from the way DDCL compares their models with DDC, since Yi2023 reports a very different performance of DDC
+compared to DDCL, so it is a bit difficult to compare between DDCL and Yi2023... I guess I'll be doing that for pump!
+- They use only melband one channel in their implementation instead of three.
+
