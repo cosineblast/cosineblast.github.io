@@ -157,3 +157,20 @@ I've read Yi2023 once again.
 compared to DDCL, so it is a bit difficult to compare between DDCL and Yi2023... I guess I'll be doing that for pump!
 - They use only melband one channel in their implementation instead of three.
 
+## 25/05/2026
+
+I've started studying the SM file format and gimmicks in Pump it Up files, trying to understand warp effect.s
+
+## 26/05/2026
+
+I've finished understanding the different category of gimmick charts and how they're used in Stepmania 5 files.
+
+BPM changes may be tricky, but fortunately, the most common way of applying gimmicks is through scrolls, and speed sections, which
+do not affect note timing.
+It should be possible to filter warp, and fake blocks
+
+## 29/05/2026
+
+I've started writing the StepMania file parser and filter for the upcoming models.
+
+
