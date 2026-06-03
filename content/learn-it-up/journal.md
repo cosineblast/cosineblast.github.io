@@ -173,4 +173,35 @@ It should be possible to filter warp, and fake blocks
 
 I've started writing the StepMania file parser and filter for the upcoming models.
 
+## 31/05/2026
 
+I've implemented absolute time audio extraction and stepfile simulation (for manually comparing the absolute times with the note times of real charts).
+
+## 01/05/2026
+
+I've studied the fourier transform through characteristic functions to have a better understanding of fourier analysis and synthesis.
+
+As a result of my studies, have this over-engineered fizzbuzz without branching or modular arithmetic:
+
+```py
+import math
+
+freqs  = [-1.00, -0.80,-0.67, -0.60, -0.40, -0.33, -0.20,
+         -0.00, 0.20 , 0.33 , 0.40 , 0.60 , 0.67 , 0.80 ]
+norms  = [11.00, 6.00 ,5.00 , 6.00 , 6.00 , 5.00 , 6.00 ,
+         11.00, 6.00 , 5.00 , 6.00 , 6.00 , 5.00 , 6.00 ]
+
+def fizzbuzz(x):
+    result = 0
+    for freq, norm in zip(freqs, norms):
+        result += norm * math.cos(2 * math.pi * freq * x)
+    i = result / 30
+    return [x, 'Fizz', 'Buzz', 'FizzBuzz'][round(i)]
+
+for i in range(1, 101):
+    print(fizzbuzz(i))
+```
+
+## 02/05/2026
+
+I've started implementing feature extraction using the essentia library and the same parameters as DDC.
