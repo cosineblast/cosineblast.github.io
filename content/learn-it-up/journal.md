@@ -177,7 +177,7 @@ I've started writing the StepMania file parser and filter for the upcoming model
 
 I've implemented absolute time audio extraction and stepfile simulation (for manually comparing the absolute times with the note times of real charts).
 
-## 01/05/2026
+## 01/06/2026
 
 I've studied the fourier transform through characteristic functions to have a better understanding of fourier analysis and synthesis.
 
@@ -202,6 +202,16 @@ for i in range(1, 101):
     print(fizzbuzz(i))
 ```
 
-## 02/05/2026
+## 02/06/2026
 
 I've started implementing feature extraction using the essentia library and the same parameters as DDC.
+
+## 03/06/2026
+
+Implemented the command line interface to extract SSC information and audio features from real pump it up datasets.
+
+## 04/06/2026
+
+Talked to members of the community to learn that on level S18 and above, the difficulty of songs changes considerably if the
+arrows are mirrored vertically. Updated the CLI tool to reflect that.
+Minor improvemetns in the command line implementation for the project.
