@@ -215,3 +215,18 @@ Implemented the command line interface to extract SSC information and audio feat
 Talked to members of the community to learn that on level S18 and above, the difficulty of songs changes considerably if the
 arrows are mirrored vertically. Updated the CLI tool to reflect that.
 Minor improvemetns in the command line implementation for the project.
+
+## 6/6/2026
+
+- Added support for the [`uv`](https://docs.astral.sh/uv/) package manager in the project repo, documenting python package versions for
+reproducibility.
+- Started working towards analyzing the post-filtered dataset of pump it up charts, using a marimo notebook.
+I've started trying out julia recently, and Pluto.jl, their notebook plataform, it's pretty great! However,
+since I have already started this with python, I will continue with python going forward. I will use marimo notebooks
+in general, since they have plenty of the niceties of pluto, but for python.
+Most charts are around S16, with a standard deviation of four.
+
+### NOTES
+
+Turns out that there are 6 files that were processed but did not have any charts, since all of their charts were filtered out for
+having gimmicks. I shall filter these chartless files out in the future.
