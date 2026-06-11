@@ -230,3 +230,20 @@ Most charts are around S16, with a standard deviation of four.
 
 Turns out that there are 6 files that were processed but did not have any charts, since all of their charts were filtered out for
 having gimmicks. I shall filter these chartless files out in the future.
+
+## 8/6/2026
+
+I've ran the existing code for learn-it-up project in the Rede Linux servers, and all the processing pipelines, and analytics notebooks ran well!
+
+I've decided to have a look at some of the data in the project, and learned a terrible fate: most charts have very weird BPMs in relationship to their real bpms.
+
+See the chart for DUEL. 
+
+## 9/6/2026
+
+- Implemented PyTorch code for DanceDanceConvolution CNN and C-LSTM onset model.
+
+### NOTES
+
+I was thinking on starting with DDCL, but considering the BPM issues I found yesterday, I'm starting with DDC since its main weakness - using absolute time,
+can delay me with the fate of dealing with Pump it Up's weird BPMs.
