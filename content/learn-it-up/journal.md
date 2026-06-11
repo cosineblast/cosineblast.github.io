@@ -247,3 +247,12 @@ See the chart for DUEL.
 
 I was thinking on starting with DDCL, but considering the BPM issues I found yesterday, I'm starting with DDC since its main weakness - using absolute time,
 can delay me with the fate of dealing with Pump it Up's weird BPMs.
+
+## 10/6/2026
+
+- Started implementing dataset loading for the CNN onset model
+
+python3 in my machine takes 1 second to run a `pass` loop from 1 to 14 million.
+there are 14 million audio feature samples in the dataset.
+i hate my life.
+i wish julia was real.
