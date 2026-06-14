@@ -256,3 +256,93 @@ python3 in my machine takes 1 second to run a `pass` loop from 1 to 14 million.
 there are 14 million audio feature samples in the dataset.
 i hate my life.
 i wish julia was real.
+
+## 11/6/2026
+
+I started training the CNN onset model on the rede linux vegeta machine.
+The initial performance check was done by checking the average loss over all the frames in the validation set.
+I initially trained with an Adam optimizer, dropout of zero, and 0.001 learning rate.
+
+I trained 80 epochs. While training I noticed that the validation average loss was going really bad over the validation set, growing steadily.
+This made me realize that the dropout was initially set to zero (actually, I hadn't even placed the dropout layers).
+
+Note: When training, we normalize the audio features for each _audio file_ so that each audio has mean zero and variance one.
+DDC does this using the mean and variance of the **whole validation** dataset (???)
+
+## 12/6/2026
+
+Throughout the day, I trained 50 epochs of a 0.5 dropout model with SGD 0.1 lr 1.0 weight decay which is used in the DDC scripts.
+The training regimen is not specified in DDC, neither the learning rate, nor the number of epochs, or weight decay.
+This time, the validation set loss was not really going down, nor increasing. I don't know if this is better tbh.
+
+I added unit tests to the CNN dataset loading process to make sure it was working as expected, and that the following optimizations were safe to make.
+I have optimized the data loading process to avoid having to check the indices in every call, by adding some padding to the data.
+It now takes around 30 seconds to iterate over the whole training dataset in vegeta, which should cost us around 30 seconds per epoch. Not too bad.
+I could optimize out the binary search as well with a cache, which could reduce it further, but I think I have better stuff to do.
+
+### NOTES
+
+While 'interactively studying' the dataset at night, I noticed a few important things for the project:
+
+1. The onset model probably should not be trying to add onsets to end-of-hold notes.
+Hold notes are usually there either for stylistic/difficulty reasons, or because the music has a sustained musical note.
+When doing stepcharting, I usually think when to _make_ a note a hold note, not in terms of when a note should _stop_ being held.
+The audio criteria for starting a hold note is not the same for ending one.
+
+I think it would make more sense to make so that the onset model treats holds as regular-ish notes, and then have an auxiliary model tell which notes
+should be made hold notes (and for how long).
+
+Also, kpop onsets are weird. I should look into that.
+
+## 13/6/2026
+
+I have implemented the aligned precision-recall AUC metric which is used by DDC. Running it on a randomly initialized CNN network gave me scores of around 0.05,
+whereas running it in a single epoch trained CNN gave me scores of around 0.4-0.5:
+This gave me some hope, since it means the model may be at least learning _something_.
+
+On the other hand, a single-epoch network doesn't yield such great results for other metrics:
+
+```
+epoch 1/100.
+evaluation=FullEvaluation(
+  avg_precision=np.float64(0.061953475162220745),
+  avg_recall=np.float64(0.9715870720853564),
+  avg_fscore=np.float64(0.11457087720499035),
+  avg_loss=np.float32(0.5484841),
+  avg_raw_auc_score=0.5265657523938453,
+  avg_aligned_auc_score=0.41927391788468876,
+  avg_accuracy=0.1732478208552864
+)
+```
+
+```
+randomly initialized network:
+FullEvaluation(
+  avg_precision=np.float64(0.05350902051179025),
+  avg_recall=np.float64(0.9432253049938485),
+  avg_fscore=np.float64(0.10031142426696686),
+  avg_loss=np.float32(0.7056311),
+  avg_raw_auc_score=0.051663703507923806,
+  avg_aligned_auc_score=0.04707373093129912,
+  avg_accuracy=0.10995156341944352
+)
+```
+
+
+(Raw AUC score uses the raw scores from the model output, aligned AUC scores is the one used by DDC,
+that aligns the peak scores with the real onsets if they are within a 20 milliseconds of one another).
+
+I then implemented f1 score, precision, and accuracy evaluation scores, in a similar matter to the ones used by DDC.
+
+It would be nice to make a plot of the real onsets for a chart, and the scores suggested by the model.
+However I haver other stuff to do:
+
+- Implement the DDC LSTM step placement dataset loading.
+- Implement the DDC LSTM step selection models.
+- Implement the DDC LSTM step placement models.
+
+- Implement the DDCL step placement models.
+- Implement the DDCL step selection models.
+
+- If any model gives us any decent performance, augment chart info with the max shen dataset
+
