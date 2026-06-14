@@ -298,10 +298,11 @@ Also, kpop onsets are weird. I should look into that.
 
 I have implemented the aligned precision-recall AUC metric which is used by DDC. Running it on a randomly initialized CNN network gave me scores of around 0.05,
 whereas running it in a single epoch trained CNN gave me scores of around 0.4-0.5:
-This gave me some hope, since it means the model may be at least learning _something_.
+This gave me some hope, since it means the model may be at least learning _something_ in the original configuration.
 
 On the other hand, a single-epoch network doesn't yield such great results for other metrics:
 
+One epoch (weird learning parameters, buggy evaluation):
 ```
 epoch 1/100.
 evaluation=FullEvaluation(
@@ -315,8 +316,8 @@ evaluation=FullEvaluation(
 )
 ```
 
+Randomly initialized network (weird learning parameters, buggy evaluation):
 ```
-randomly initialized network:
 FullEvaluation(
   avg_precision=np.float64(0.05350902051179025),
   avg_recall=np.float64(0.9432253049938485),
@@ -330,7 +331,9 @@ FullEvaluation(
 
 
 (Raw AUC score uses the raw scores from the model output, aligned AUC scores is the one used by DDC,
-that aligns the peak scores with the real onsets if they are within a 20 milliseconds of one another).
+that aligns the peak scores with the real onsets if they are within a 20 milliseconds of one another.
+PS: The aligned scores should always be higher than the raw ones, but due to a bug, that's not the case
+).
 
 I then implemented f1 score, precision, and accuracy evaluation scores, in a similar matter to the ones used by DDC.
 
@@ -340,9 +343,90 @@ However I haver other stuff to do:
 - Implement the DDC LSTM step placement dataset loading.
 - Implement the DDC LSTM step selection models.
 - Implement the DDC LSTM step placement models.
-
 - Implement the DDCL step placement models.
 - Implement the DDCL step selection models.
-
 - If any model gives us any decent performance, augment chart info with the max shen dataset
 
+## 14/6/2026
+
+The CNN model does not really learn anything when given the weird learning configuration
+used by the script (learning rate  =0.1, weight decay=1.0), running 100 epochs gave little change in loss
+(around `0.547`), and no change in anything else.
+
+- Fixed an offset bug in the model evaluation code
+This explains why the aligned scores were higher than the raw scores somehow.
+
+- Added unit tests to evaluation. This would be a nice target for property based testing.
+
+Ran the evaluation on the model with one epoch of training, both on the training and validation set.
+The model has basically no gain of performance, and it probably means that the model is underfitting.
+This makes sense since weight decay used in the script is absurdly high.
+I'm going to try it with some more reasonable learning parameters.
+
+Validation and training set evaluations for original learning parameters with one epoch:
+```
+epoch 1/1.
+evaluation=FullEvaluation(
+  avg_precision=np.float64(0.07130479244259558),
+  avg_recall=np.float64(0.9999052905772364),
+  avg_fscore=np.float64(0.13090117183217154),
+  avg_loss=np.float32(0.54657215),
+   avg_raw_auc_score=0.5265657523938453,
+  avg_aligned_auc_score=0.5356086886851058,
+   avg_accuracy=0.26286247016044945)
+
+epoch 1/1.
+training evaluation=FullEvaluation(
+  avg_precision=np.float64(0.06494214096904),
+  avg_recall=np.float64(0.9999979033529579),
+  avg_fscore=np.float64(0.11979563030314623),
+  avg_loss=np.float32(0.5450856),
+  avg_raw_auc_score=0.5245296126221776,
+  avg_aligned_auc_score=0.5324701066159356,
+  avg_accuracy=0.24408444356515335)
+````
+
+Randomly initialized network performance:
+
+```
+FullEvaluation(
+  avg_precision=np.float64(0.24093813185151294),
+  avg_recall=np.float64(0.8009248094725991),
+  avg_fscore=np.float64(0.3599704888309575),
+  avg_loss=np.float32(0.6690475),
+  avg_raw_auc_score=0.052920011201352556,
+  avg_aligned_auc_score=0.2240785736249959,
+  avg_accuracy=0.8563030075667782)
+```
+
+I ran it with a proper configuration (one epoch of adam with a learning rate of 0.001), and well:
+
+```
+epoch 1/1.
+  evaluation=FullEvaluation(
+       avg_precision=np.float64(0.6483496168554931),
+       avg_recall=np.float64(0.7703568652144877),
+>>>    avg_fscore=np.float64(0.6984546978182594),
+       avg_loss=np.float32(0.14726742),
+       avg_raw_auc_score=0.3823113868904456,
+>>>    avg_aligned_auc_score=0.7091686654382708,
+       avg_accuracy=0.9689086687203682)
+```
+
+This is a _EXCELLENT_!!!!
+
+In one (1) epoch, we got an fscore of 0.698, and an aligned auc score 0.709, and an aligned accuracy of 96%!
+For reference, the official DDC LSTM model got an AUC of 0.680 and 0.691 f-score!
+
+In other words: we have successfully replicated the step placement performance of DanceDanceConvolution for Pump it Up!
+
+We still have a long journey to go:
+
+- Implement the LSTM onset detection
+- Implement the step selection models
+- Implement DanceDanceConvLSTM
+- Add NPS info
+- Try different data models
+- Add piucenter info
+
+And I'm very excited to try all that!
