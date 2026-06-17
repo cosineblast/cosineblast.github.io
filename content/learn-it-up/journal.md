@@ -430,3 +430,46 @@ We still have a long journey to go:
 - Add piucenter info
 
 And I'm very excited to try all that!
+
+PS: the fact that DDC step selection does not use difficulty information nor musical features bothers me so much.
+
+## 15/6/2026
+
+Today I showed the project to Ronaldo, started organizing the monograph text, and started implementing the LSTM for step selection.
+
+Upon pondering about the data loading task for LSTM, I realized there are a few different ways of going about handling the input sequences in batches for epochs.
+
+The way DDC does it, is to randomly select a chart, and randomly select a sequence of 100 steps in that chart, pick 64 of these sequences, and call that the batch.
+Then, repeat again and again and again. The issue with doing that, is that after some time training, while many sequences will not likely be seen by the model,
+others will be seen multiple times. In its codebase, Dance Dance Convolution acknowledges this in a comment:
+
+```py
+def get_random_subsequence(self, subseq_len, **feat_kwargs):
+  ...
+  #TODO: first sequence incredibly unlikely to appear, balance this
+  ...
+```
+I don't like this approach. I believe epochs should span all samples, prefeably once. To deal with this when picking sequences for batches, I decided to divide the
+chart steps in blocks of size 100, implement a function that selects a step block given an index, and uniformly sample 64 of those blocks to build each batch, spanning
+all blocks once per epoch.
+
+The issue, is that charts don't usually have multiple-of-100 steps in them, and the model input expects all the sequences in a batch to have the same length.
+So, there are a few approaches to handle those remainder-by-100 steps in charts I thought of:
+
+1. Drop sequences with less than 100 steps.
+2. Force sequences to have size 100, allowing overlapping between the end of the penultimate sequence and the start of the last sequence of a chart when the step count is not divisible by 100.
+3. Use batches of variable length, so that the sequences of length 100 (which are most of them) all fall in the same batches, and the sequences with the
+  remaining steps fall in shorter batches. This can be done by implementing a custom pytorch Sampler class.
+  When sampling in this mode, a decision to be made is what to do when a batch of 100-step-sequences is being built, but a sequence with less than 100 steps is found.
+  One could yield the existing batch to the model, even if it has less than 64 elements, or to delay yielding the element until the current batch is full with 64 sequences.
+  Another option is the delay these sequences with less than 100 elements to the end of the dataset altoghether.
+4. Considering that the output of our model is an LSTM-processed sequence of step predictions, one for each element of the sequence, we can just pad shorter sequences up to size 100,
+and ignore the model output of the padded input elements. This can be done by multiplying the resulting loss with a mask of ones and zeros (e.g `[1,1,...,0,0]`) with ones
+in the positions of real steps, and zero of the position of padded garbage steps. This way, the propagating gradient of the loss will be zero regarding the padded steps,
+as if they weren't there.
+
+I like option 4.
+
+
+
+
