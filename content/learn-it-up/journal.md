@@ -486,3 +486,23 @@ This is very interesting, but it shows that the current way the model decides wh
 since start of holds and end of holds are treated the same. If the model decides to make a chart short-hold heavy, the effective
 note density of the model is basically halved.
 
+## 18/6/2026
+
+Refactored somethings in the models and selection notebook:
+I had forgotten to add the time before the next step in the delta time. It was reaching a plateau of 56%, and now it can reach 59%, which
+is really close to the 60% of best performance in the original paper, and already better than the 45% of best performance in the InTheGroove dataset in the original paper.
+(considering DCC Fraxtil Dataset with delta time only).
+
+It is now easier to specify the LSTM layers and hidden state size from the notebook.
+I ran 100 epochs for the selection model other configurations such as 3 layers or 256 hidden, and didn't see any significant improvements,
+all of these still capping at 59% maybe we can do better if we train it for 6 hours like in DDC, who knows.
+
+In any way, we have achieved the metrics of DanceDanceconvolution for both step placement and step selection in Pump it Up.
+
+Next steps:
+- Implement the chart generation program and website for public access and evaluation
+- Document stuff
+- Implement the DanceDanceConvLSTM models
+- Implement sanitizing StepP1-specific gimmick notes (like vanish) to allow training in pre-phoenix datasets
+- Add the PIUCenter annotated datasets as input to the models
+
