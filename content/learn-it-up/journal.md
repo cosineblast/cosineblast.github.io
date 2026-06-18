@@ -470,6 +470,19 @@ as if they weren't there.
 
 I like option 4.
 
+## 16/6/2026
 
+I implemented and trained the LSTM step selection model of DanceDanceConvolution, and trained it for 100 epochs, I achieve an accuracy of 57% in the dataset.
+Looking good!
 
+PS: In this version of the model, I forgot to include the time-until-next-step feature in delta time.
+
+## 17/6/2026
+
+I wrote a program to allow me to see the generated chart of a music file (writing the chart to disk is still underway).
+
+Running it with the dropout turned on, sometimes the model decides to generate a bunch of holds instead of single step notes.
+This is very interesting, but it shows that the current way the model decides which notes should be holds or not kind of sucks,
+since start of holds and end of holds are treated the same. If the model decides to make a chart short-hold heavy, the effective
+note density of the model is basically halved.
 
