@@ -506,3 +506,32 @@ Next steps:
 - Implement sanitizing StepP1-specific gimmick notes (like vanish) to allow training in pre-phoenix datasets
 - Add the PIUCenter annotated datasets as input to the models
 
+## 19/6/2026
+
+I wrote and documented the initial CLI for generating Pump it Up charts, and tested it in a few charts.
+The generation of charts is _ok_ I guess, generally within my expectations for this project.
+It surprises me how much before and after delta-time can affect the step placement, prefering to put holds
+and jumps on longer delays, which is often good.
+
+One of the things that bothers me in this step generation is about how holds are handled by the model.
+Holds are typically started at the start of a long pattern in the music, and end at the end of such note.
+The criteria for starting a hold is the _opposite_ of the criteria for _ending_ a hold.
+The placement model is trying to learn both, and that's fine, as long as it does it well, but 
+since the selection model has no knowledge of what is meant to be a start or end of hold and what is meant to be a regular step,
+it may place regular steps in places where an end of hold would have been ideal. It is _very_ weird when a regular step is placed on an end-of-hold step.
+
+![Vertical image of a section of a chart, showing in the background vertically the audio waveform of the song at each instant of time.
+  The wave image shows two segments related to long patterns in the music.
+  The selection model placed two regular steps where the placement model predicted a good point for end-of-hold steps](downbeat.png)
+
+Things that could help improve the model in this regard:
+- Make so that the placement model not only finds whether a step should be placed at the given frame, but also whether it should makes more sense as an
+end of hold step. This seems like a great opportunity for the C-LSTM step placement model.
+- Check whether k-pop affects the model in this regard, since note placement based on voice cues is a bit different from placement on instrumental cues.
+(maybe train a model exclusively on k-pop and one not on k-pop at all?)
+I like the first idea.
+
+Next steps:
+- Implement the C-LSTM step placement model
+- Implement vertical mirroring for charts below S17 (forgor to do that before)
+- Try out this idea
