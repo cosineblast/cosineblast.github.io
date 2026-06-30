@@ -535,3 +535,31 @@ Next steps:
 - Implement the C-LSTM step placement model
 - Implement vertical mirroring for charts below S17 (forgor to do that before)
 - Try out this idea
+
+## 29/6/2026
+
+Over the past few days I have been implementing the dataset related classes for DDCL.
+I implemented a loader and evaluator for DDCL, using the same aligned metric style of the original DDC.
+
+I have tried it with a simple architecture that receives a 32 x 80 x 3 feature context and passed it to the DDC C-LSTM pipeline, but it spits out 48 sigmoids,
+intead of just one frame. The performance isn't great so far, there's a lot to experiment and improve, including:
+1. Evaluating the metrics on the 48 per-beat onsets directly instead of doing the DDC shenanigans (which may be worsing the apparent quality of the model?)
+2. Changing the network parameters (the DCC ones were made for a single frame, not an entire beat)
+3. Using the DDCL architecture directly
+4. Inspect some values by hand to see if there's some junk in the data
+
+I should probably read the taiko nation paper for more ideas.
+
+some execution logs:
+```
+epoch 10/100.
+evaluation=FullEvaluation(
+  avg_precision=np.float64(0.15535974474293304),
+  avg_recall=np.float64(0.4874740227110578),
+  avg_fscore=np.float64(0.18143710296567678),
+  avg_loss=np.float32(0.18842132),
+  avg_raw_auc_score=0.049235211756064344,
+  avg_aligned_auc_score=0.10102857669307765,
+  avg_accuracy=0.648853769286615,
+)
+```
