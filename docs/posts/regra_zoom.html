@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+
+  <title> cosineblast </title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/reset.css">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <nav>
+    <a href="/">
+      <nav-title> Renan Ribeiro </nav-title>
+      <sub-title> a.k.a cosineblast </sub-title>
+    </a>
+    <ul>
+      <li> <a href="/blog.html"> BLOG </a> </li>
+      <li> <a href="https://github.com/cosineblast"> GITHUB </a> </li>
+      <li> <a href="/learn-it-up"> TCC </a> </li>
+    <ul>
+  </nav>
+
+  <main>
+    <h1 id="regra-do-zoom">Regra do zoom</h1>
+<p><em>22/05/2026</em></p>
+<p>Em física no ensino médio, nós normalmente aprendemos sobre vetores
+como setinhas, e manipulamos eles utilizando uma intuição geométrica.
+Dentre as operações vetoriais, uma que pode causar confusão entre as
+pessoas, é o <a
+href="https://en.wikipedia.org/wiki/Cross_product">produto vetorial</a>.
+A principal característica do produto vetorial entre dois vetores
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+é que ele é perpendicular a ambos os vetores, e quanto mais
+perpendicular forem
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+maior o tamanho do produto. Ele é descrito em notação como
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>×</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \times b</annotation></semantics></math>.</p>
+<!-- ![Ilustração de um vetor apontando de um ponto A para um ponto B](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vector_from_A_to_B.svg/250px-Vector_from_A_to_B.svg.png) -->
+<figure>
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Cross_product.gif"
+alt="GIF de produto vetorial entre dois vetores a e b. a e b são vetores horizontais, então o produto vetorial apontará para cima, ou para baixo. Quanto mais perpendiculares (menos paralelos) forem a e b, maior o tamanho de a \times b." />
+<figcaption aria-hidden="true">GIF de produto vetorial entre dois
+vetores
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+são vetores horizontais, então o produto vetorial apontará para cima, ou
+para baixo. Quanto mais perpendiculares (menos paralelos) forem
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+maior o tamanho de
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>×</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \times b</annotation></semantics></math>.</figcaption>
+</figure>
+<p>A parte mais confusa de lembrar do produto vetorial em minha opinião,
+é sobre o sentido do vetor. Dado que os vetores
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+estão ambos horizontais, o produto
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>×</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \times b</annotation></semantics></math>
+será perpendicular a ambos, então o produto irá apontar ou para cima, ou
+para baixo. Mas, para qual dos dois ele vai apontar? Nas escolas, é
+ensinada a regra da mão direita, em que você usa a sua mão direita para
+representar os vetores
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+com os dedos indicadores e médio, e o dedão representa o produto. É uma
+regra simples, mas eu acho muito fácil de esquecer qual dedo representa
+qual vetor.</p>
+<figure>
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/7/74/Right-hand_rule_for_cross_product.png"
+alt="Ilustração da regra da mão direita" />
+<figcaption aria-hidden="true">Ilustração da regra da mão
+direita</figcaption>
+</figure>
+<p>Pensando um pouco sobre isso, eu percebi que tem tem um jeito muito
+parecido e fácil de determinar a direção do produto vetorial, e ela
+funciona tanto com a mão direita, quanto com a mão esquerda.</p>
+<p>Eu chamo esta de regra do zoom: Para descobrir a direção do produto
+vetorial
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>×</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \times b</annotation></semantics></math>,
+escolha uma mão qualquer sua, e, com a palma virada para a tela/papel,
+coloque a seus dedos médio e indicador diretamente em cima das letra
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+em
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>×</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \times b</annotation></semantics></math>,
+como se estivesse tocando em uma interface touch.</p>
+<p>Agora, mantendo os dois dedos na tela/papel, se você fizer um gesto
+de zoom com os seus três dedos, indicador, médio e polegar, a direção do
+dedo polegar será a direção que o produto vetorial tenderá a ir. Isso
+funciona tanto com a mão esquerda, como com a mão direita.</p>
+<figure>
+<img src="/zoomrule.jpg"
+alt="Aplicação da regra do zoom com a mão esquerda. Os dedos médios e indicadores ficam nos vetores a e b, e o dedão representa a direção do vetor a \times b" />
+<figcaption aria-hidden="true">Aplicação da regra do zoom com a mão
+esquerda. Os dedos médios e indicadores ficam nos vetores
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+e
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+e o dedão representa a direção do vetor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>×</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \times b</annotation></semantics></math></figcaption>
+</figure>
+<p>Após fazer isso, você pode redirecionar os dedos para os vetores que
+você quer descobrir o produto (de maneira parecida como é feito com a
+regra da mão direita), e obterá a direção do produto vetorial. Isso
+funciona tanto com a mão esquerda quanto com a mão direita.</p>
+<p>E assim, magnetismo foi conquistado.</p>
+
+  </main>
+
+  <footer>
+    © Renan Ribeiro Marcelino
+  </footer>
+</body>
+
+
+</html>
+

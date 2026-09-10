@@ -1,0 +1,31 @@
+<h1 id="today-i-learned-pretty-python-last">Today I Learned: Pretty
+python <code>last</code></h1>
+<p><em>2026/05/30</em></p>
+<p>I’ve always found python’s functional list processing capabilities to
+be quite annoying:</p>
+<ul>
+<li>Unable to do multiline blocks in lambdas (and therefore unable to
+create variables)</li>
+<li>Basic functional transformations (e.g skip N elements) locked behind
+external packages such as <a
+href="https://pypi.org/project/more-itertools/">more-itertools</a></li>
+</ul>
+<p>So whenver I’m working with python for some project and I end up
+deciding on using functional programming to describe my transformations,
+I always keep my expectations quite low.</p>
+<p>However, today I’ve found something that genuinely made me think
+“impressive!” when dealing with iterators in python. In short, I needed
+to get the last element of an iterator. I could just do
+<code>last = list(iterator)[-1]</code>, but turning the whole thing into
+a list makes me unconfortable (I know, worrying about performance and
+python aren’t two things one should do at the same time, but I wouldn’t
+feel ok unless I’ve learned how to do this properly). Instead, turns out
+that python has some since syntax for unpacking lists when doing
+destructuring:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">*</span>_, last <span class="op">=</span> iterator</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+<p>Simple, no need to turn the whole thing into a list, works just
+great! You can also use a variable name instead of <code>_</code> if you
+want to save the content of the rest of the list. It’s like specialized
+subset of pattern matching, if you think about it.</p>
